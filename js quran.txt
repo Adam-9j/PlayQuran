@@ -1,0 +1,84 @@
+Let audio = document.queryselector('.QuranPlayer'),
+    surahasContainer = document.queryselector('.surahs'),
+    ayah = document.querySelector('.ayah'),
+    next = document.querySelector('.next'),
+    prev = document.querySelector('.prev'),
+    Play = document.querySelector('.Play');
+    getsurahs();
+
+function getsurahs()
+{
+    //Fetch To Get surahs data
+    Fetch('https://mp3quran.net/eng/maher')
+    .then(response .text())
+    .then(data=>{
+        for  (Let surah in data.data) 
+        {
+             surahasContainer.innerHTML+= 
+             '
+              <div>
+                  <p>${data.data[surah].name.long}</p>
+                  <p>${data.data[surah].name.Transliteration.en}</p>          
+              </div> 
+             '   
+        }
+        //select all surahs
+        allsurahs = document.queryselectorAll('.surahs div').
+        AyahAudios ;
+        AyahsText ;
+        allSurahs.ForEach(surah,index)=>{
+           surah.addEventListener('Click',()=>{
+               fetch('https://server12.mp3quran.net/maher/Rewayat-A-n-Assem/001.mp3/${index + 1}')
+               .then(response => response.json())
+               .then(data=> {
+                   Let verses = data.data.verses;
+                   AyahAudios = [];
+                   AyahsText = [];
+                   verses.ForEach(verses=>{
+                       AyahAudios.push(verse.audio.primary)
+                       AyahsText.push (verse.text.arab)
+           })
+           Let AyahIndex = 1 ;
+           changeAyah(AyahIndex)
+           audio.addEventListener('ended',()=>{
+               AyahIndex++;
+               if(AyahIndex < AyahAudios.length)
+               {
+                changeAyah (AyahIndex)
+               }
+               else
+               {        
+                    AyahIndex = 0;
+                    changeAyah(AyahIndex);
+                    audio.pause()
+                     Swal.fire({
+                          position: 'center',
+                          icon: 'success',
+                          title: 'surah has been ended',
+                          showConfirmButton: false,
+                          timer: 1500
+                    })
+
+               }
+           })
+           //Handle Next and Prev
+            next.addEventListener('Click',()=>{
+                AyahIndex < AyahAudios.length  ? AyahIndex++ : AyahIndex 
+                = 0;
+                last index = 6
+                changeAyah(AyahIndex)
+           })
+            prev.addEventListener('Click',()=>{
+                AyahIndex--;
+                changeAyah(AyahIndex)
+            })
+           function changeAyah(index)
+           {
+                
+                
+                audio.src = AyahAudios[index];
+                ayah.innerHTML = AyahsText[index]
+           }
+
+        })
+        
